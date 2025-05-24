@@ -1,0 +1,23 @@
+{
+  "name": "@killiandvcz/starling",
+  "module": "src/index.js",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.js",
+    "./messages": "./src/messages/index.js"
+  },
+  "scripts": {
+    "demo": "bun --watch ./test/server.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@killiandvcz/pulse": "^1.1.0",
+    "p-retry": "^6.2.1"
+  }
+}
