@@ -3,7 +3,7 @@ import { Pulse } from "@killiandvcz/pulse";
 import { Message } from "../messages/message";
 import { Request } from "../messages/request";
 import { Response } from "../messages/response";
-import { Methods } from "$/managers/methods";
+import { Methods } from "../managers/methods";
 import { RequestContext } from "./context";
 
 export class Starling {

@@ -1,11 +1,13 @@
 {
   "name": "@killiandvcz/starling",
+  "version": "1.1.0",
   "module": "src/index.js",
   "type": "module",
-  "private": true,
   "exports": {
-    ".": "./src/index.js",
-    "./messages": "./src/messages/index.js"
+    ".": "./src/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "demo": "bun --watch ./test/server.js"
