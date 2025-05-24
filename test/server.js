@@ -17,7 +17,16 @@ starling.on("message:emitted", message => {
 });
 
 starling.onconnected(() => {
-    starling.request("user:create", {name: "John Doe"}).then(res => {
+    // starling.text("Welcome to the Starling server!", {
+    //     peer: {            id: "server",}
+    // });
+
+    starling.request("user:create", {name: "John Doe"}, {
+        peer: {
+            id: "server",
+            name: "Server"
+        }
+    }).then(res => {
         console.log("Response", res.data);
     }).catch(err => {
         console.error("Error", err);

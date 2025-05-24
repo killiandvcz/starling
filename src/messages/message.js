@@ -7,6 +7,7 @@
  * @property {string[]} [tags] - The tags of the message.
  * @property {number} [ttl] - The time to live of the message.
  * @property {MessageHeaders} [headers] - The headers of the message.
+ * @property {any} [peer] - Data for Peer-to-Peer communication.
  */
 
 
@@ -17,6 +18,7 @@
  * @property {Date} timestamp - The timestamp of the message.
  * @property {string} [previousId] - The ID of the previous message.
  * @property {string} [topic] - The topic of the message.
+ * @property {any} [peer] - Data for Peer-to-Peer communication.
  * @property {string[]} [tags] - The tags of the message.
  */
 
@@ -65,7 +67,8 @@ export class Message {
             timestamp: options?.timestamp || new Date(),
             ...(options?.topic ? { topic: options.topic } : {}),
             ...(options?.tags ? { tags: options.tags } : {}),
-            ...(options?.previousId ? { previousId: options.previousId } : {})
+            ...(options?.previousId ? { previousId: options.previousId } : {}),
+            ...(options?.peer ? { peer: options.peer } : {})
         };
         message.data = data;
         message.direction = "outgoing";

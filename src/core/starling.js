@@ -155,13 +155,11 @@ export class Starling {
     /**
     * @param {string} method
     * @param {any} payload
-    * @param {{
-    *   timeout?: number,
-    * }} options
+    * @param {import("../messages/request").RequestOptions} options
     * @returns {Promise<import('../messages/response').Response>}
     */
     request = (method, payload, options) => new Promise((resolve, reject) => {
-        const request = Request.outgoing(payload, { method });
+        const request = Request.outgoing(payload, { method, ...options });
         this.#emit(request);
         const timeout = options?.timeout || 5000;
         const timer = setTimeout(() => this.requests.emit(`request:${request.id}:error`, new Error("Request timed out")), timeout);
@@ -186,7 +184,7 @@ export class Starling {
     * @param {import('../messages/response').ResponseOptions} options
     */
     respond = (request, payload, options) => {
-        if (!request instanceof Request) throw new Error("[request] is not an instance of Request");
+        if (!(request instanceof Request)) throw new Error("[request] is not an instance of Request");
         if (!request.id) throw new Error("[request] does not have an id");
         const incoming = this.incoming.get(request.id);
         if (!incoming) throw new Error("[request] is not an incoming request");
@@ -198,7 +196,7 @@ export class Starling {
     * @param {import('../messages/message').Message} message
     */
     ack = (message) => {
-        if (!message instanceof Message) throw new Error("[message] is not an instance of Message");
+        if (!(message instanceof Message)) throw new Error("[message] is not an instance of Message");
         if (!message.id) throw new Error("[message] does not have an id");
         const idBytes = new TextEncoder().encode(message.id);
         const buffer = new Uint8Array(2 + idBytes.length);
