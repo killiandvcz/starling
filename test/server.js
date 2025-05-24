@@ -1,36 +1,46 @@
 import { Starling } from "$";
 
-const starling = new Starling();
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-starling.method("token:check", async context => {
+const starlingA = new Starling();
+starlingA.method("manifest", async context => {
+    console.log("Starling A manifest method called");
     return context.success({
-        valid: true,
-        user: {
-            id: "12345",
-            name: "John Doe"
-        }
-    })
-});
-
-starling.on("message:emitted", message => {
-    console.log("Message emitted:", message);
-});
-
-starling.onconnected(() => {
-    // starling.text("Welcome to the Starling server!", {
-    //     peer: {            id: "server",}
-    // });
-
-    starling.request("user:create", {name: "John Doe"}, {
-        peer: {
-            id: "server",
-            name: "Server"
-        }
-    }).then(res => {
-        console.log("Response", res.data);
-    }).catch(err => {
-        console.error("Error", err);
+        name: "Starling A",
+        version: "1.0.0",
+        description: "This is Starling A"
     });
 });
+starlingA.connect("ws://localhost:3000");
+starlingA.onconnected(() => {
+    console.log("Starling A connected");
+});
 
-starling.connect("ws://localhost:3000");
+
+const starlingB = new Starling();
+starlingB.method("manifest", async context => {
+    console.log("Starling B manifest method called");
+    
+    return context.success({
+        name: "Starling B",
+        version: "1.0.0",
+        description: "This is Starling B"
+    });
+})
+starlingB.connect("ws://localhost:3000");
+starlingB.onconnected(() => {
+    console.log("Starling B connected");
+
+    wait(5000).then(() => {
+        starlingA.request("manifest",{}, {
+            peer: {
+                name: "Starling B"
+            }
+        }).then(response => {
+            console.log("Starling A received response from Starling B:", response.data);
+        });
+    })
+
+
+});
+
